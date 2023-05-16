@@ -1,6 +1,7 @@
 body {
   font: 14px "Century Gothic", Futura, sans-serif;
   margin: 20px;
+  background-color: rgb(43, 42, 42);
 }
 
 .game {
@@ -10,7 +11,7 @@ body {
 }
 
 .header {
-  border-bottom: 1px solid lightgray;
+  border-bottom: 1px solid  rgb(43, 42, 42);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -18,8 +19,27 @@ body {
 }
 
 .score {
+  display: flex;
+  justify-content: center;
   margin: 10px;
   font-size: 25px;
+  color: whitesmoke;
+  content: "Score";
+}
+
+
+.marco{
+  padding: 15px;
+  align-items: center;
+  border-radius: 10%;
+  transform: scale(0.9);
+}
+.sum{
+  color: aliceblue;
+  font-size: 18px;
+  display: inline-block;
+  justify-content: center;
+  text-align: center;
 }
 
 .board {
@@ -95,4 +115,24 @@ body {
 
 .connectorLine.backslash {
   transform: rotate(45deg);
+}
+
+.boton-booster {
+  background-color: #4CAF50; /* Color de fondo */
+  border: none; /* Quitamos el borde por defecto */
+  color: white; /* Color del texto */
+  padding: 10px 20px; /* Agregamos un poco de padding para que se vea mejor */
+  text-align: center; /* Centramos el texto */
+  text-decoration: none; /* Quitamos la decoración del enlace */
+  display: inline-block; /* Hacemos que sea un bloque de línea para que ocupe todo el ancho posible */
+  font-size: 16px; /* Tamaño de la fuente */
+  cursor: pointer; /* Cambiamos el cursor a una mano para indicar que es clickeable */
+  border-radius: 5px; /* Agregamos un radio para los bordes */
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* Agregamos una sombra para dar profundidad */
+}
+
+/* Agregamos un efecto hover para cuando el usuario pase el cursor por encima */
+.boton-booster:hover {
+  background-color: #3e8e41;
+  color: white;
 }

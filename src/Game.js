@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PengineClient from './PengineClient';
 import Board from './Board';
-import { joinResult } from './util';
+import { joinResult, numberToColor, valueInPos} from './util';
 
 let pengine;
 
@@ -13,6 +13,7 @@ function Game() {
   const [score, setScore] = useState(0);
   const [path, setPath] = useState([]);
   const [waiting, setWaiting] = useState(false);
+  const [PossiblePathAdd, setPossiblePathAdd] = useState(0);
 
   useEffect(() => {
     // This is executed just once, after the first render.
@@ -41,10 +42,22 @@ function Game() {
     if (waiting) {
       return;
     }
+    setPossiblePathAdd(redondeo((addPath(newPath))));
+    console.log("Score:" + PossiblePathAdd);
     setPath(newPath);
     console.log(JSON.stringify(newPath));
   }
 
+  function addPath(newPath) {
+    var sum = 0;
+    for (var j = 0; j < newPath.length; j++) {
+    sum += valueInPos(newPath[j], grid, numOfColumns);
+    }
+    return sum;
+    }
+
+ 
+  
   /**
    * Called when the user finished drawing a path in the grid.
    */
@@ -66,6 +79,7 @@ function Game() {
           RGrids
         ).
     */
+    setPossiblePathAdd(0);    
     const gridS = JSON.stringify(grid);
     const pathS = JSON.stringify(path);
     const queryS = "join(" + gridS + "," + numOfColumns + "," + pathS + ", RGrids)";
@@ -100,11 +114,38 @@ function Game() {
   if (grid === null) {
     return null;
   }
+ 
+  function redondeo(num){
+    const log2 = Math.floor(Math.log2(num));
+    return Math.pow(2,log2) === num ? num : Math.pow(2,log2+1);
+  }
+
+  function handleButtonClick() {
+    const gridS = JSON.stringify(grid);
+    const queryS = "booster(" + gridS + "," + numOfColumns + ", RGrids)";
+    setWaiting(true);
+    pengine.query(queryS, (success, response) => {
+      if (success) {
+        animateEffect(response['RGrids']);
+      } else {
+        setWaiting(false);
+      }
+    });
+  }
+ 
   return (
     <div className="game">
-      <div className="header">
-        <div className="score">{score}</div>
+       <div className="header">
+        <div className="contenedor">
+         <div className="score">{score}</div>
+           <div className="marco" id='marco' style={{
+            backgroundColor : numberToColor(PossiblePathAdd),
+            visibility : path.length>0
+           }}>
+        <div className="sum">{PossiblePathAdd}</div>
       </div>
+    </div>
+  </div>
       <Board
         grid={grid}
         numOfColumns={numOfColumns}
@@ -112,6 +153,7 @@ function Game() {
         onPathChange={onPathChange}
         onDone={onPathDone}
       />
+      <button class="boton-booster" onClick={handleButtonClick}>Booster</button>
     </div>
   );
 }
